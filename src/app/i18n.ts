@@ -20,7 +20,7 @@ const portuguese = {
   metadata: {
     title: 'Taler — histórias feitas sob medida.',
     description:
-      'Conheça o conceito Taler: audiolivros com vozes por personagem e narração guiada pelo contexto.',
+      'Audiolivros com vozes distintas para narradores e personagens, leitura sincronizada e narração guiada pelo contexto.',
   },
   brand: {
     pronunciationHint: "Como 'tailor' em inglês",
@@ -32,7 +32,7 @@ const portuguese = {
     howItWorks: 'Como funciona',
     features: 'Recursos',
     plans: 'Planos',
-    start: 'Conhecer a proposta',
+    start: 'Começar agora',
     menuOpen: 'Abrir menu',
     menuClose: 'Fechar menu',
     languageAction: 'Mudar idioma para inglês',
@@ -42,9 +42,9 @@ const portuguese = {
     title: 'Toda história merece',
     titleEmphasis: 'uma voz própria.',
     description:
-      'O Taler é um conceito para transformar livros em audiolivros com vozes distintas para narradores e personagens. A proposta também inclui interpretação contextual e ambientação sonora.',
-    createAudiobook: 'Ver como seria o orçamento',
-    explore: 'Ver como funcionaria',
+      'Transforme livros em audiolivros com vozes distintas para narradores e personagens. O Taler também sincroniza o texto com a narração e adapta a interpretação ao contexto de cada cena.',
+    createAudiobook: 'Ver como o orçamento é calculado',
+    explore: 'Como funciona',
     artworkLabel:
       'Ilustração abstrata de um livro que se transforma em ondas sonoras',
     artworkTitle: 'Livro aberto irradiando ondas sonoras',
@@ -63,76 +63,71 @@ const portuguese = {
   features: {
     title: 'O texto orienta',
     titleEmphasis: 'quem fala e quando.',
-    lead:
-      'A proposta organiza capítulos e falas para definir quando a narração muda de voz.',
+    lead: 'O Taler organiza capítulos e falas para alternar a narração conforme a história.',
     cards: [
       {
         number: '01',
         title: 'Estrutura e leitura sincronizada',
-        text: 'A proposta prevê organizar capítulos e sincronizar o destaque do texto com a narração.',
+        text: 'Capítulos e texto acompanham a narração durante a escuta.',
       },
       {
         number: '02',
         title: 'Uma voz por personagem',
-        text: 'Personagens recorrentes manteriam a mesma voz entre capítulos; a distribuição poderia ser revisada antes da geração.',
+        text: 'O Taler atribui as vozes automaticamente e mantém cada identidade vocal entre os capítulos. Se quiser, ajuste as sugestões antes de gerar.',
       },
       {
         number: '03',
         title: 'Interpretação contextual',
-        text: 'A proposta Premium considera o contexto e a emoção da cena para definir a entonação e o ritmo da narração.',
+        text: 'No Premium, o contexto e a emoção de cada cena orientam a entonação e o ritmo.',
       },
     ],
   },
   process: {
-    eyebrow: 'FLUXO PREVISTO',
+    eyebrow: 'COMO FUNCIONA',
     title: 'Como o livro vira',
     titleEmphasis: 'um audiolivro.',
-    lead:
-      'Estas etapas descrevem uma experiência planejada; upload e geração de áudio ainda não estão disponíveis.',
+    lead: 'A IA identifica os personagens e distribui as vozes. Se quiser, ouça amostras e ajuste as sugestões antes de gerar o audiolivro.',
     steps: [
       {
         number: '1',
         icon: 'upload' as IconName,
-        title: 'Envie seu livro',
+        title: 'Importe seu livro',
         text: 'Envie um arquivo PDF, EPUB ou TXT.',
       },
       {
         number: '2',
         icon: 'layers' as IconName,
-        title: 'Analisamos a história',
-        text: 'A análise prevista identifica capítulos, narradores, personagens e diálogos.',
+        title: 'Distribuição automática de vozes',
+        text: 'A IA identifica capítulos, narradores, personagens e diálogos, distribui as vozes e mantém cada identidade vocal consistente.',
       },
       {
         number: '3',
         icon: 'mic' as IconName,
-        title: 'Defina as vozes',
-        text: 'Defina uma voz para cada personagem e escolha o grau de interpretação.',
+        title: 'Personalize se quiser',
+        text: 'Ouça amostras e, se preferir, troque as vozes sugeridas por outras disponíveis.',
       },
       {
         number: '4',
         icon: 'headphones' as IconName,
-        title: 'Ouça sua história',
-        text: 'O audiolivro seria organizado por capítulos para você acompanhar a narração.',
+        title: 'Gere seu audiolivro',
+        text: 'O Taler gera o audiolivro com as vozes atribuídas e os ajustes escolhidos.',
       },
     ],
     formats: 'PDF, EPUB e TXT',
-    privacyNote: 'O suporte a esses formatos está previsto no conceito.',
+    privacyNote: 'Arquivos PDF, EPUB e TXT são aceitos.',
   },
   demo: {
     eyebrow: 'TRECHO DEMONSTRATIVO',
     title: 'Três vozes',
     titleEmphasis: 'na mesma cena.',
-    lead:
-      'Trecho fictício com narrador e dois personagens. A interface mostra como as falas poderiam ser atribuídas a vozes diferentes.',
+    lead: 'Trecho fictício com narrador e dois personagens. Cada fala é associada à voz correspondente.',
     preview: 'PRÉVIA DEMONSTRATIVA',
     chapter: 'O JARDIM DEPOIS DA CHUVA',
     fictionLabel: '— TRECHO FICTÍCIO',
     narrator: 'NARRADOR',
-    narratorLine:
-      'A chuva parou. Nas folhas, a água ainda tremia.',
+    narratorLine: 'A chuva parou. Nas folhas, a água ainda tremia.',
     lena: 'LENA',
-    lenaLine:
-      '“Você ouviu?” Lena não tirava os olhos do jardim.',
+    lenaLine: '“Você ouviu?” Lena não tirava os olhos do jardim.',
     marcos: 'MARCOS',
     marcosLine: '“Só o silêncio”, disse Marcos. “Às vezes, basta.”',
     nowNarrating: 'AGORA NARRA',
@@ -142,20 +137,20 @@ const portuguese = {
     play: 'Iniciar animação demonstrativa',
     pause: 'Pausar animação demonstrativa',
     disclaimer:
-      'Esta prévia não reproduz áudio. O botão anima apenas a interface.',
+      'Prévia visual da alternância de vozes; esta demonstração não inclui áudio.',
   },
   plans: {
     title: 'Três opções',
     titleEmphasis: 'de narração.',
-    lead:
-      'A proposta organiza os recursos planejados em três modalidades: Essencial, Multivozes e Premium.',
+    lead: 'Escolha entre três modalidades: Essencial, Multivozes e Premium. Cada uma reúne recursos de narração diferentes.',
     price: 'Sob medida',
     priceNote: 'orçamento por projeto',
     choose: 'Explorar',
     items: [
       {
         name: 'Essencial',
-        description: 'Uma voz ao longo do livro, com organização por capítulos.',
+        description:
+          'Uma voz ao longo do livro, com organização por capítulos.',
         features: [
           'Uma voz para todo o livro',
           'Narração natural',
@@ -188,30 +183,29 @@ const portuguese = {
       },
     ],
     priceDisclaimer:
-      'Sem tabela fixa: cada orçamento será calculado por projeto.',
+      'O orçamento varia conforme o documento e as configurações escolhidas.',
   },
   soundscape: {
-    eyebrow: 'RECURSO PLANEJADO PARA O PREMIUM',
+    eyebrow: 'RECURSO PREMIUM',
     title: 'O som também conta',
     titleEmphasis: 'a história.',
-    lead:
-      'A proposta Premium é gerar música e efeitos com base no contexto de cada cena, acompanhando as mudanças da narrativa.',
+    lead: 'No Premium, trilha e efeitos acompanham o contexto de cada cena e as mudanças da narrativa.',
     features: [
       {
         title: 'Música guiada pela cena',
-        text: 'A música consideraria o gênero, o cenário e o clima da cena. As transições acompanhariam mudanças na narrativa, da tensão à calmaria.',
+        text: 'A música acompanha o gênero, o cenário e o clima da cena. As transições seguem as mudanças da narrativa, da tensão à calmaria.',
       },
       {
         title: 'Efeitos no momento certo',
-        text: 'Chuva, passos, portas, vento ou multidões seriam inseridos conforme os acontecimentos. Música e efeitos poderiam ser usados juntos ou separados.',
+        text: 'Chuva, passos, portas, vento e multidões entram conforme os acontecimentos. Use música e efeitos juntos ou separados.',
       },
       {
         title: 'Volumes separados',
-        text: 'A proposta prevê controles independentes para narração, música e efeitos, além da opção de desligar cada camada sonora.',
+        text: 'Ajuste separadamente o volume da narração, da música e dos efeitos, ou desligue cada camada sonora.',
       },
     ],
     visualLabel:
-      'Interface conceitual de áudio planejada: cena de suspense, narração, trilha sonora e efeitos com níveis de volume independentes.',
+      'Prévia da interface de áudio do Taler, com uma cena, narração, trilha sonora, efeitos e níveis de mixagem separados.',
     scene: 'O JARDIM DEPOIS DA CHUVA',
     chapter: 'CAPÍTULO 04',
     sceneTitle: 'Passos no',
@@ -221,23 +215,23 @@ const portuguese = {
       ['Trilha sonora', 'SUSPENSE · CORDAS', 'mix-track-music'],
       ['Efeitos', 'CHUVA · PASSOS', 'mix-track-effects'],
     ],
-    plannedForPremium: 'PLANEJADA PARA O PREMIUM',
-    illustrativeControls: 'CONTROLES ILUSTRATIVOS · NÃO FUNCIONAIS',
+    plannedForPremium: 'INCLUÍDA NO PREMIUM',
+    illustrativeControls: 'PRÉVIA DE MIXAGEM',
   },
   pricing: {
     eyebrow: 'ORÇAMENTO POR LIVRO',
     title: 'O valor depende',
     titleEmphasis: 'do que você escolher.',
     description:
-      'Extensão do livro, qualidade do áudio, número de vozes e grau de interpretação entram no cálculo. O orçamento será apresentado antes da geração.',
-    calculate: 'Entenda como seria o orçamento',
+      'O orçamento considera a extensão do livro, a qualidade do áudio, o número de vozes e o grau de interpretação. Você recebe o valor antes de iniciar a geração.',
+    calculate: 'Ver como o valor é calculado',
     reassurance: 'A geração só começa após sua aprovação.',
-    flowLabel: 'Etapas previstas para montar o orçamento',
+    flowLabel: 'Etapas para calcular o orçamento',
     steps: [
       ['1', 'Envio do livro', 'Arquivo PDF, EPUB ou TXT'],
       ['2', 'Análise do documento', 'Estrutura e personagens'],
-      ['3', 'Configuração', 'Vozes e interpretação'],
-      ['4', 'Apresentação do orçamento', 'Antes de gerar o áudio'],
+      ['3', 'Personalização opcional', 'Amostras, vozes e interpretação'],
+      ['4', 'Revise o orçamento', 'Antes de gerar o áudio'],
     ],
     reviewTitle: 'Revise antes de aprovar.',
     reviewText:
@@ -253,37 +247,37 @@ const portuguese = {
       {
         question: 'Quais formatos de arquivo são aceitos?',
         answer:
-          'PDF, EPUB e TXT estão previstos. O envio e a leitura desses arquivos ainda não foram implementados.',
+          'A plataforma aceita arquivos nos formatos PDF, EPUB e TXT, permitindo importar livros para transformá-los em audiolivros.',
       },
       {
         question: 'A plataforma identifica automaticamente os personagens?',
         answer:
-          'Ainda não. O reconhecimento de personagens e diálogos faz parte do plano, não desta versão.',
+          'Sim. A IA identifica personagens, narradores, diálogos e mudanças de interlocutor, e usa essa análise para distribuir as vozes.',
       },
       {
         question: 'Posso escolher as vozes?',
         answer:
-          'A escolha de vozes está planejada; esta versão não gera áudio nem oferece uma seleção funcional.',
+          'O Taler sugere e distribui as vozes automaticamente. Você pode ouvir amostras e substituir as sugestões por outras vozes disponíveis.',
       },
       {
         question: 'Como funciona quando o narrador muda?',
         answer:
-          'A proposta é identificar mudanças de narrador e atribuir a voz correspondente. Esse processamento ainda não existe.',
+          'A IA identifica mudanças de interlocutor e mantém a voz atribuída a cada narrador ou personagem ao longo da história.',
       },
       {
-        question: 'Posso alterar uma voz depois de gerar o audiolivro?',
+        question: 'Posso ouvir amostras das vozes?',
         answer:
-          'A geração de audiolivros ainda não está disponível. Na proposta, as vozes seriam revisadas antes de gerar o áudio.',
+          'Sim. Ouça as opções disponíveis e, se quiser, substitua uma voz sugerida antes de gerar o audiolivro.',
       },
       {
         question: 'Como o preço é calculado?',
         answer:
-          'Ainda não há cobrança. O orçamento previsto considera extensão do livro, qualidade do áudio, número de vozes e grau de interpretação.',
+          'O valor é calculado com base em fatores como a extensão do livro, a qualidade de áudio selecionada, a quantidade de vozes utilizadas e o nível de interpretação da narração.',
       },
       {
         question: 'Posso utilizar livros de minha autoria?',
         answer:
-          'A proposta inclui obras próprias. Será necessário ter os direitos ou as autorizações para usar o texto.',
+          'Sim. Você pode utilizar obras de sua própria autoria, desde que possua os direitos necessários para reproduzir e transformar o conteúdo em áudio.',
       },
     ],
   },
@@ -291,8 +285,8 @@ const portuguese = {
     title: 'Livros em áudio',
     titleEmphasis: 'com vozes distintas.',
     description:
-      'O Taler está em desenvolvimento. Conheça a proposta de narração, vozes por personagem e ambientação sonora.',
-    cta: 'Conhecer o projeto',
+      'Envie seu livro e deixe o Taler distribuir as vozes. Revise e ajuste as sugestões se quiser.',
+    cta: 'Começar agora',
     tagline: 'Histórias feitas sob medida.',
   },
   footer: {
@@ -307,7 +301,7 @@ const portuguese = {
     termsSubject: 'Termos de uso',
     privacySubject: 'Política de privacidade',
     copyright: '© 2026 Taler. Todos os direitos reservados.',
-    signoff: 'Projeto independente em desenvolvimento.',
+    signoff: 'Vozes distintas, narração guiada pelo contexto.',
   },
 }
 
@@ -315,19 +309,19 @@ const english: typeof portuguese = {
   metadata: {
     title: 'Taler — stories, tailored to you.',
     description:
-      'Meet the Taler concept: audiobooks with distinct character voices and context-aware narration.',
+      'Audiobooks with distinct narrator and character voices, synchronized text, and context-aware narration.',
   },
   brand: {
     pronunciationHint: "As in 'tailor'",
     homeLabel: 'Taler, back to top',
-    tagline: 'Stories, tailored to you.'
+    tagline: 'Stories, tailored to you.',
   },
   header: {
     navLabel: 'Main navigation',
     howItWorks: 'How it works',
     features: 'Features',
     plans: 'Plans',
-    start: 'Explore the concept',
+    start: 'Get started',
     menuOpen: 'Open menu',
     menuClose: 'Close menu',
     languageAction: 'Switch language to Portuguese',
@@ -337,9 +331,9 @@ const english: typeof portuguese = {
     title: 'Every story deserves',
     titleEmphasis: 'a voice of its own.',
     description:
-      'Taler is a concept for turning books into audiobooks with distinct voices for narrators and characters. The proposal also includes contextual interpretation and sound design.',
-    createAudiobook: 'See how a quote would work',
-    explore: 'See how it could work',
+      'Turn books into audiobooks with distinct voices for narrators and characters. Taler also syncs text with narration and adapts each performance to the scene.',
+    createAudiobook: 'See how pricing works',
+    explore: 'How it works',
     artworkLabel:
       'Abstract illustration of an open book turning into sound waves',
     artworkTitle: 'An open book sending out sound waves',
@@ -358,67 +352,64 @@ const english: typeof portuguese = {
   features: {
     title: 'The text guides',
     titleEmphasis: 'who speaks, and when.',
-    lead:
-      'The proposal organizes chapters and dialogue to determine when the narration changes voice.',
+    lead: 'Taler organizes chapters and dialogue so narration changes with the story.',
     cards: [
       {
         number: '01',
         title: 'Structure and synchronized reading',
-        text: 'The concept includes chapter organization and text highlighting synced with narration.',
+        text: 'Chapters and on-page text stay in sync with the narration.',
       },
       {
         number: '02',
         title: 'A voice for each character',
-        text: 'Recurring characters would keep the same voice across chapters; voice assignments could be reviewed before generation.',
+        text: 'Taler assigns voices automatically and keeps each character’s vocal identity consistent across chapters. Review suggestions if you like.',
       },
       {
         number: '03',
         title: 'Contextual interpretation',
-        text: 'The planned Premium tier would use a scene’s context and emotion to shape narration pace and tone.',
+        text: 'Premium uses each scene’s context and emotion to shape narration pace and tone.',
       },
     ],
   },
   process: {
-    eyebrow: 'PLANNED FLOW',
+    eyebrow: 'HOW IT WORKS',
     title: 'How a book becomes',
     titleEmphasis: 'an audiobook.',
-    lead:
-      'These steps describe a planned experience; book uploads and audio generation are not available yet.',
+    lead: 'AI identifies the characters and assigns their voices. Listen to samples and adjust the suggestions before generating, if you like.',
     steps: [
       {
         number: '1',
         icon: 'upload' as IconName,
-        title: 'Add your book',
+        title: 'Import your book',
         text: 'Upload a PDF, EPUB, or TXT file.',
       },
       {
         number: '2',
         icon: 'layers' as IconName,
-        title: 'We analyze the story',
-        text: 'The planned analysis identifies chapters, narrators, characters, and dialogue.',
+        title: 'Automatic voice assignment',
+        text: 'AI identifies chapters, narrators, characters, and dialogue, assigns the voices, and keeps each identity consistent.',
       },
       {
         number: '3',
         icon: 'mic' as IconName,
-        title: 'Set the voices',
-        text: 'Choose a voice for each character and set the level of interpretation.',
+        title: 'Customize if you like',
+        text: 'Listen to samples and, if you prefer, replace suggested voices with other available options.',
       },
       {
         number: '4',
         icon: 'headphones' as IconName,
-        title: 'Listen to your story',
-        text: 'The audiobook would be organized by chapter so you can follow along.',
+        title: 'Generate your audiobook',
+        text: 'Taler generates the audiobook with assigned voices and any adjustments you made.',
       },
     ],
     formats: 'PDF, EPUB, and TXT',
-    privacyNote: 'Support for these formats is part of the concept.',
+    privacyNote: 'PDF, EPUB, and TXT files are supported.',
   },
   demo: {
     eyebrow: 'VOICE DEMONSTRATION',
     title: 'Three voices',
     titleEmphasis: 'in one scene.',
-    lead:
-      'A fictional excerpt with a narrator and two characters. The mockup shows how each line could be assigned a different voice.',
+    lead: 'A fictional excerpt with a narrator and two characters. Each line is matched to its speaker’s voice.',
     preview: 'DEMO PREVIEW',
     chapter: 'THE GARDEN AFTER THE RAIN',
     fictionLabel: '— FICTIONAL EXCERPT',
@@ -435,13 +426,12 @@ const english: typeof portuguese = {
     play: 'Start demonstration animation',
     pause: 'Pause demonstration animation',
     disclaimer:
-      'This preview has no audio. The button only animates the interface.',
+      'Visual preview of the voice changes; this demo does not include audio.',
   },
   plans: {
     title: 'Three options',
     titleEmphasis: 'for narration.',
-    lead:
-      'The concept groups planned features into three options: Essential, Multivoice, and Premium.',
+    lead: 'Choose from three plans: Essential, Multivoice, and Premium, each with a different set of narration features.',
     price: 'Custom',
     priceNote: 'project-based quote',
     choose: 'Explore',
@@ -468,7 +458,8 @@ const english: typeof portuguese = {
       },
       {
         name: 'Premium',
-        description: 'Narration, performance, and sound shaped around each scene.',
+        description:
+          'Narration, performance, and sound shaped around each scene.',
         features: [
           'Everything in Multivoice',
           'Vocal profile for each character',
@@ -481,30 +472,29 @@ const english: typeof portuguese = {
       },
     ],
     priceDisclaimer:
-      'No fixed price list; each quote would be calculated for the project.',
+      'Your quote reflects the book and the narration settings you choose.',
   },
   soundscape: {
-    eyebrow: 'PLANNED PREMIUM FEATURE',
+    eyebrow: 'PREMIUM FEATURE',
     title: 'Sound is part',
     titleEmphasis: 'of the story.',
-    lead:
-      'Premium is planned to generate music and effects based on each scene, following changes in the narrative.',
+    lead: 'Premium soundtracks and effects follow the context of each scene and the shifts in the story.',
     features: [
       {
         title: 'Music shaped by the scene',
-        text: 'Music would reflect a scene’s genre, setting, and mood. Transitions would follow shifts in the story, from tension to calm.',
+        text: 'Music follows each scene’s genre, setting, and mood. Transitions move with the story, from tension to calm.',
       },
       {
         title: 'Effects at the right moment',
-        text: 'Rain, footsteps, doors, wind, or crowds would be placed as events unfold. Music and effects could be used together or separately.',
+        text: 'Rain, footsteps, doors, wind, and crowds come in as events unfold. Use music and effects together or separately.',
       },
       {
         title: 'Separate volume controls',
-        text: 'The concept includes independent controls for narration, music, and effects, with the option to turn off each sound layer.',
+        text: 'Adjust narration, music, and effects independently, or turn off any sound layer.',
       },
     ],
     visualLabel:
-      'Concept audio interface planned for the product: suspense scene, narration, soundtrack, and effects with independent volume levels.',
+      'Preview of Taler’s audio interface, showing a scene, narration, soundtrack, effects, and separate mix levels.',
     scene: 'THE GARDEN AFTER THE RAIN',
     chapter: 'CHAPTER 04',
     sceneTitle: 'Footsteps in',
@@ -514,23 +504,23 @@ const english: typeof portuguese = {
       ['Soundtrack', 'SUSPENSE · STRINGS', 'mix-track-music'],
       ['Effects', 'RAIN · FOOTSTEPS', 'mix-track-effects'],
     ],
-    plannedForPremium: 'PLANNED FOR PREMIUM',
-    illustrativeControls: 'ILLUSTRATIVE CONTROLS · NOT FUNCTIONAL',
+    plannedForPremium: 'INCLUDED WITH PREMIUM',
+    illustrativeControls: 'MIX PREVIEW',
   },
   pricing: {
     eyebrow: 'A QUOTE FOR EACH BOOK',
     title: 'The cost depends',
     titleEmphasis: 'on your choices.',
     description:
-      'Book length, audio quality, number of voices, and interpretation style would factor into the quote. You would see the price before generation.',
-    calculate: 'See how a quote would work',
-    reassurance: 'Generation would begin after your approval.',
-    flowLabel: 'Planned steps to prepare a quote',
+      'Your quote reflects book length, audio quality, number of voices, and interpretation style. You see the price before generation begins.',
+    calculate: 'See how pricing is calculated',
+    reassurance: 'Generation begins only after you approve the quote.',
+    flowLabel: 'Steps to calculate your quote',
     steps: [
       ['1', 'Upload the book', 'PDF, EPUB, or TXT file'],
       ['2', 'Document analysis', 'Structure and characters'],
-      ['3', 'Set up narration', 'Voices and interpretation'],
-      ['4', 'Review the quote', 'Before audio generation'],
+      ['3', 'Optional customization', 'Samples, voices, and interpretation'],
+      ['4', 'Review your quote', 'Before audio generation'],
     ],
     reviewTitle: 'Review before you approve.',
     reviewText:
@@ -544,39 +534,39 @@ const english: typeof portuguese = {
     navLabel: 'Frequently asked questions',
     items: [
       {
-        question: 'Which file formats will be supported?',
+        question: 'Which file formats can I upload?',
         answer:
-          'PDF, EPUB, and TXT are planned. Upload and file reading are not implemented yet.',
+          'You can upload books in PDF, EPUB, and TXT formats.',
       },
       {
-        question: 'Will the platform identify characters automatically?',
+        question: 'Does Taler identify characters automatically?',
         answer:
-          'Not yet. Character and dialogue recognition is planned, but is not part of this version.',
+          'Yes. AI identifies characters, narrators, dialogue, and changes in who is speaking, then uses that analysis to assign voices.',
       },
       {
-        question: 'Will I be able to choose the voices?',
+        question: 'Can I choose the voices?',
         answer:
-          'Voice selection is planned; this version does not generate audio or offer a working voice selector.',
+          'Taler suggests and assigns voices automatically. Listen to samples and replace a suggestion with another available voice if you like.',
       },
       {
         question: 'What happens when the narrator changes?',
         answer:
-          'The concept is to identify narrator changes and assign the corresponding voice. That processing does not exist yet.',
+          'AI detects changes in speaker and keeps the assigned voice consistent for each narrator or character.',
       },
       {
-        question: 'Can I change a voice after generating the audiobook?',
+        question: 'Can I listen to voice samples?',
         answer:
-          'Audiobook generation is not available yet. The proposal is to review voices before generating audio.',
+          'Yes. Preview available voices and replace a suggestion before generating the audiobook if you like.',
       },
       {
-        question: 'How will pricing work?',
+        question: 'How is pricing calculated?',
         answer:
-          'There is no billing yet. A future quote would consider book length, audio quality, number of voices, and interpretation style.',
+          'Your quote is based on book length, audio quality, the number of voices, and the level of interpretation.',
       },
       {
         question: 'Can I use books I wrote?',
         answer:
-          'Using your own work is part of the proposal. You would need the rights or permission to use the text.',
+          'Yes, as long as you hold the rights or have permission to use the text.',
       },
     ],
   },
@@ -584,8 +574,8 @@ const english: typeof portuguese = {
     title: 'Books in audio',
     titleEmphasis: 'with distinct voices.',
     description:
-      'Taler is in development. Explore its proposed approach to narration, character voices, and sound.',
-    cta: 'Explore the concept',
+      'Upload a book and let Taler assign the voices. Review and adjust its suggestions if you like.',
+    cta: 'Get started',
     tagline: 'Stories, tailored to you.',
   },
   footer: {
@@ -600,7 +590,7 @@ const english: typeof portuguese = {
     termsSubject: 'Terms of use',
     privacySubject: 'Privacy policy',
     copyright: '© 2026 Taler. All rights reserved.',
-    signoff: 'An independent project in development.',
+    signoff: 'Distinct voices, guided by context.',
   },
 }
 
