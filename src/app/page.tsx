@@ -269,7 +269,7 @@ function Brand({ footer = false }: { footer?: boolean }) {
       {footer ? (
         <span className='brand-tagline'>Stories, tailored to you.</span>
       ) : (
-        <span className='brand-phonetic'>/ˈteɪ.lɚ/</span>
+        <span className='brand-phonetic' title="como 'tailor' em inglês">/ˈteɪ.lɚ/</span>
       )}
     </a>
   )
