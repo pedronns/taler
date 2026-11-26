@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Taler — Stories, tailored to you.",
+  title: "Taler — histórias feitas para você.",
   description:
-    "Transforme seus livros em experiências de áudio únicas. Histórias interpretadas, narradores e personagens com vozes próprias.",
+    "Conheça o conceito Taler: livros transformados em experiências de áudio personalizadas, com vozes e interpretação próprias.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

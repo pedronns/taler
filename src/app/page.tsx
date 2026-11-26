@@ -1,23 +1,30 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
+import { messages, type IconName, type Locale, type Messages } from './i18n'
 
-type IconName =
-  | 'arrow'
-  | 'book'
-  | 'check'
-  | 'chevron'
-  | 'circle'
-  | 'headphones'
-  | 'layers'
-  | 'menu'
-  | 'mic'
-  | 'pause'
-  | 'play'
-  | 'spark'
-  | 'upload'
-  | 'volume'
+const LANGUAGE_STORAGE_KEY = 'taler-language'
+
+function subscribeToLanguage(onStoreChange: () => void) {
+  window.addEventListener('storage', onStoreChange)
+  window.addEventListener('taler-language-change', onStoreChange)
+
+  return () => {
+    window.removeEventListener('storage', onStoreChange)
+    window.removeEventListener('taler-language-change', onStoreChange)
+  }
+}
+
+function getLanguageSnapshot(): Locale {
+  return window.localStorage.getItem(LANGUAGE_STORAGE_KEY) === 'en'
+    ? 'en'
+    : 'pt-BR'
+}
+
+function getServerLanguageSnapshot(): Locale {
+  return 'pt-BR'
+}
 
 function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   const paths: Record<IconName, ReactNode> = {
@@ -128,174 +135,49 @@ function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   )
 }
 
-const features = [
-  {
-    number: '1',
-    icon: 'layers' as const,
-    title: 'Narrativas inteligentes',
-    text: 'Capítulos, narradores, personagens e diálogos são reconhecidos para preservar o ritmo e a estrutura da história.',
-  },
-  {
-    number: '2',
-    icon: 'mic' as const,
-    title: 'Vozes personalizadas',
-    text: 'Escolha uma voz para cada personagem. A identidade de cada um acompanha a história do primeiro ao último capítulo.',
-  },
-  {
-    number: '3',
-    icon: 'spark' as const,
-    title: 'Interpretação contextual',
-    text: 'No Premium, personalidade, contexto e emoção orientam uma interpretação mais expressiva, além das palavras.',
-  },
-]
-
-const steps = [
-  {
-    number: '1',
-    icon: 'upload' as const,
-    title: 'Envie seu livro',
-    text: 'PDF, EPUB ou TXT. Sua história começa com um arquivo.',
-  },
-  {
-    number: '2',
-    icon: 'layers' as const,
-    title: 'Analisamos a história',
-    text: 'Identificamos estrutura, narradores, personagens e diálogos.',
-  },
-  {
-    number: '3',
-    icon: 'mic' as const,
-    title: 'Personalize a experiência',
-    text: 'Escolha as vozes e o nível de interpretação que você imagina.',
-  },
-  {
-    number: '4',
-    icon: 'headphones' as const,
-    title: 'Ouça sua história',
-    text: 'Gere, acompanhe e aproveite seu audiolivro, capítulo a capítulo.',
-  },
-]
-
-const plans = [
-  {
-    index: '1',
-    name: 'Essencial',
-    description: 'Uma voz, a história inteira. Do seu jeito.',
-    features: [
-      'Uma voz para todo o livro',
-      'Narração natural',
-      'Organização por capítulos',
-      'Controles de reprodução',
-    ],
-  },
-  {
-    index: '2',
-    name: 'Multivozes',
-    description: 'Cada personagem com sua própria presença.',
-    features: [
-      'Vozes distintas para personagens',
-      'Detecção de diálogos',
-      'Identidade vocal consistente',
-      'Alternância entre personagens',
-    ],
-    featured: true,
-  },
-  {
-    index: '3',
-    name: 'Premium',
-    description: 'Uma interpretação que sente a história.',
-    features: [
-      'Tudo do Multivozes',
-      'Personalidades vocais',
-      'Interpretação emocional contextual',
-      'Variações de entonação e ritmo',
-      'Maior controle criativo',
-      'Trilhas sonoras geradas por IA',
-      'Efeitos sonoros contextuais',
-      'Transições musicais sincronizadas com a narrativa',
-      'Controle independente de volumes e ambientação',
-    ],
-  },
-]
-
-const faqs = [
-  {
-    question: 'Quais formatos de arquivo são aceitos?',
-    answer:
-      'Você poderá enviar arquivos PDF, EPUB e TXT. A análise identifica o texto e a estrutura do documento antes de apresentar as opções de narração.',
-  },
-  {
-    question: 'A plataforma identifica automaticamente os personagens?',
-    answer:
-      'Sim. O Taler analisa a narrativa para sugerir narradores, personagens, capítulos e diálogos. Você poderá revisar essas sugestões antes de continuar.',
-  },
-  {
-    question: 'Posso escolher as vozes?',
-    answer:
-      'Sim. Você escolhe as vozes disponíveis para narradores e personagens e pode ouvir prévias antes de configurar seu projeto.',
-  },
-  {
-    question: 'Como funciona quando o narrador muda?',
-    answer:
-      'A análise identifica mudanças de perspectiva e diálogos para que você possa revisar quem está falando e definir a voz correspondente.',
-  },
-  {
-    question: 'Posso alterar uma voz depois de gerar o audiolivro?',
-    answer:
-      'As configurações poderão ser revistas antes da geração. Se quiser alterar algo depois, você poderá ajustar a seleção e conferir o impacto no orçamento antes de gerar novamente.',
-  },
-  {
-    question: 'Como o preço é calculado?',
-    answer:
-      'O orçamento considera o tamanho do documento, a qualidade escolhida, a quantidade de vozes e a complexidade da interpretação. Você verá o valor antes de iniciar a geração.',
-  },
-  {
-    question: 'Posso utilizar livros de minha autoria?',
-    answer:
-      'Sim. Você pode usar obras próprias ou documentos para os quais tenha autorização de uso. Certifique-se de possuir os direitos necessários para transformar o conteúdo em áudio.',
-  },
-]
-
-function Brand({ footer = false }: { footer?: boolean }) {
+function Brand({
+  footer = false,
+  t,
+}: {
+  footer?: boolean
+  t: Messages
+}) {
   return (
     <a
       className={`brand${footer ? ' brand-footer' : ''}`}
       href='#top'
-      aria-label='Taler, voltar ao início'
+      aria-label={t.brand.homeLabel}
     >
       <span className='brand-word'>
         taler<span className='brand-dot'>.</span>
       </span>
       {footer ? (
-        <span className='brand-tagline'>Stories, tailored to you.</span>
+        <span className='brand-tagline'>{t.brand.tagline}</span>
       ) : (
-        <span className='brand-phonetic' title="como 'tailor' em inglês">/ˈteɪ.lɚ/</span>
+        <span
+          className='brand-phonetic'
+          title={t.brand.pronunciationHint}
+        >
+          /ˈteɪ.lɚ/
+        </span>
       )}
     </a>
   )
 }
 
-function HeroArtwork() {
+function HeroArtwork({ t }: { t: Messages }) {
   return (
     <div
       className='hero-art'
-      aria-label='Ilustração abstrata de um livro que se transforma em ondas sonoras'
+      aria-label={t.hero.artworkLabel}
     >
-      <div className='art-glow' />
-      <div className='art-orbit orbit-one' />
-      <div className='art-orbit orbit-two' />
-      <span className='art-label art-label-top'>
-        <span /> UMA HISTÓRIA, MUITAS VOZES
-      </span>
-      <span className='art-note art-note-left'>capítulo um</span>
-      <span className='art-note art-note-right'>em cada palavra</span>
       <svg
         className='book-art'
         viewBox='0 0 520 390'
         role='img'
         aria-labelledby='book-art-title'
       >
-        <title id='book-art-title'>Livro aberto irradiando ondas sonoras</title>
+        <title id='book-art-title'>{t.hero.artworkTitle}</title>
         <defs>
           <linearGradient
             id='pageLeft'
@@ -433,38 +315,48 @@ function HeroArtwork() {
       <div className='art-voice voice-one'>
         <span className='voice-avatar'>N</span>
         <span>
-          <b>narrador</b>
-          <small>calmo · envolvente</small>
+          <b>{t.hero.artVoiceNarrator}</b>
+          <small>{t.hero.artVoiceNarratorTone}</small>
         </span>
-        <i />
       </div>
       <div className='art-voice voice-two'>
         <span className='voice-avatar avatar-lilac'>L</span>
         <span>
-          <b>lena</b>
-          <small>curiosa · luminosa</small>
+          <b>{t.hero.artVoiceLena}</b>
+          <small>{t.hero.artVoiceLenaTone}</small>
         </span>
-        <i />
       </div>
       <div className='art-voice voice-three'>
         <span className='voice-avatar avatar-copper'>M</span>
         <span>
-          <b>marcos</b>
-          <small>grave · sereno</small>
+          <b>{t.hero.artVoiceMarcos}</b>
+          <small>{t.hero.artVoiceMarcosTone}</small>
         </span>
-        <i />
       </div>
-      <span className='art-label art-label-bottom'>
-        <span /> A MESMA HISTÓRIA. OUTRA DIMENSÃO.
-      </span>
     </div>
   )
 }
 
 export default function Home() {
+  const language = useSyncExternalStore(
+    subscribeToLanguage,
+    getLanguageSnapshot,
+    getServerLanguageSnapshot,
+  )
   const [menuOpen, setMenuOpen] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [headerHidden, setHeaderHidden] = useState(false)
+  const t = messages[language]
+
+  useEffect(() => {
+    document.documentElement.lang = language
+    document.title = t.metadata.title
+
+    const description = document.querySelector<HTMLMetaElement>(
+      'meta[name="description"]',
+    )
+    if (description) description.content = t.metadata.description
+  }, [language, t])
 
   useEffect(() => {
     const mobileQuery = window.matchMedia('(max-width: 680px)')
@@ -533,81 +425,99 @@ export default function Home() {
     setMenuOpen(false)
   }
 
+  function toggleLanguage() {
+    const nextLanguage = language === 'pt-BR' ? 'en' : 'pt-BR'
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLanguage)
+    window.dispatchEvent(new Event('taler-language-change'))
+    setMenuOpen(false)
+  }
+
   return (
     <main id='top'>
       <header className={`site-header${headerHidden ? ' header-hidden' : ''}`}>
         <div className='header-inner'>
-          <Brand />
-          <button
-            className='menu-toggle'
-            type='button'
-            aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
-            aria-expanded={menuOpen}
-            aria-controls='primary-navigation'
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <Icon
-              name='menu'
-              size={22}
-            />
-          </button>
+          <Brand t={t} />
           <nav
             id='primary-navigation'
             className={`primary-nav${menuOpen ? ' nav-open' : ''}`}
-            aria-label='Navegação principal'
+            aria-label={t.header.navLabel}
           >
             <a
               href='#como-funciona'
               onClick={closeMenu}
             >
-              Como funciona
+              {t.header.howItWorks}
             </a>
             <a
               href='#recursos'
               onClick={closeMenu}
             >
-              Recursos
+              {t.header.features}
             </a>
             <a
               href='#planos'
               onClick={closeMenu}
             >
-              Planos
+              {t.header.plans}
             </a>
             <a
               className='button button-small button-light nav-cta'
               href='#orcamento'
               onClick={closeMenu}
             >
-              Começar agora{' '}
+              {t.header.start}{' '}
               <Icon
                 name='arrow'
                 size={15}
               />
             </a>
           </nav>
+          <div className='header-actions'>
+            <button
+              className='language-toggle'
+              type='button'
+              aria-label={t.header.languageAction}
+              onClick={toggleLanguage}
+            >
+              <span
+                key={language}
+                className='language-code'
+              >
+                {language === 'pt-BR' ? 'PT' : 'EN'}
+              </span>
+            </button>
+            <button
+              className='menu-toggle'
+              type='button'
+              aria-label={menuOpen ? t.header.menuClose : t.header.menuOpen}
+              aria-expanded={menuOpen}
+              aria-controls='primary-navigation'
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <Icon
+                name='menu'
+                size={22}
+              />
+            </button>
+          </div>
         </div>
       </header>
 
       <section className='hero section-shell'>
         <div className='hero-copy'>
           <div className='eyebrow'>
-            <span className='eyebrow-line' /> UM NOVO JEITO DE OUVIR
+            <span className='eyebrow-line' /> {t.hero.eyebrow}
           </div>
           <h1>
-            Toda história merece <em>uma voz própria.</em>
+            {t.hero.title} <em>{t.hero.titleEmphasis}</em>
           </h1>
-          <p className='hero-description'>
-            Transforme seus livros em experiências de áudio únicas. O Taler
-            interpreta narrativas, identifica personagens e cria vozes que dão
-            vida a cada história.
-          </p>
+          <p className='hero-description'>{t.hero.description}</p>
           <div className='hero-actions'>
             <a
               className='button button-primary'
               href='#orcamento'
             >
-              Criar meu audiolivro{' '}
+              {t.hero.createAudiobook}{' '}
               <Icon
                 name='arrow'
                 size={17}
@@ -617,42 +527,23 @@ export default function Home() {
               className='text-link'
               href='#como-funciona'
             >
-              Conhecer a plataforma <span>↓</span>
+              {t.hero.explore} <span>↓</span>
             </a>
           </div>
-          <div className='hero-caption'>
-            <span className='caption-rule' /> Uma experiência narrativa, feita
-            sob medida.
-          </div>
         </div>
-        <HeroArtwork />
-        <div className='hero-bottom'>
-          <span>01 — UMA NOVA PERSPECTIVA</span>
-          <span>FEITO PARA HISTÓRIAS QUE FICAM</span>
-        </div>
+        <HeroArtwork t={t} />
       </section>
 
       <section
         className='intro-strip'
-        aria-label='Diferencial Taler'
+        aria-label={t.intro.ariaLabel}
       >
         <div className='section-shell intro-inner'>
-          <span className='intro-mark'>
-            <Icon
-              name='spark'
-              size={20}
-            />
-          </span>
           <p>
-            Não é apenas ler em voz alta.
+            {t.intro.firstLine}
             <br />
-            <strong>É interpretar uma história.</strong>
+            <strong>{t.intro.emphasis}</strong>
           </p>
-          <span className='intro-side-note'>
-            A arte de contar,
-            <br />
-            reinventada para ouvir.
-          </span>
         </div>
       </section>
 
@@ -661,42 +552,20 @@ export default function Home() {
         id='recursos'
       >
         <div className='section-heading'>
-          <div>
-            <div className='eyebrow'>
-              <span className='eyebrow-line' /> O DIFERENCIAL
-            </div>
-            <h2>
-              Uma narrativa que
-              <br />
-              <em>entende a nuance.</em>
-            </h2>
-          </div>
-          <p className='section-lead'>
-            Uma história não é uma sequência de palavras. É feita de vozes,
-            intenções e momentos. O Taler escuta tudo isso.
-          </p>
+          <h2>
+            {t.features.title} {t.features.titleEmphasis}
+          </h2>
+          <p className='section-lead'>{t.features.lead}</p>
         </div>
-        <div className='feature-grid'>
-          {features.map((feature) => (
+        <div className='feature-list'>
+          {t.features.cards.map((feature) => (
             <article
-              className='feature-card'
+              className='feature-row'
               key={feature.number}
             >
-              <div className='card-topline'>
-                <span>{feature.number} / 3</span>
-                <Icon
-                  name={feature.icon}
-                  size={21}
-                />
-              </div>
+              <span className='feature-number'>{feature.number}</span>
               <h3>{feature.title}</h3>
               <p>{feature.text}</p>
-              <span
-                className='feature-decoration'
-                aria-hidden='true'
-              >
-                ✳
-              </span>
             </article>
           ))}
         </div>
@@ -708,23 +577,18 @@ export default function Home() {
       >
         <div className='section-shell section-block'>
           <div className='section-heading'>
-            <div>
+            <div className='process-title'>
               <div className='eyebrow'>
-                <span className='eyebrow-line' /> COMO FUNCIONA
+                <span className='eyebrow-line' /> {t.process.eyebrow}
               </div>
               <h2>
-                Do seu livro a uma experiência
-                <br />
-                <em>feita sob medida.</em>
+                {t.process.title} {t.process.titleEmphasis}
               </h2>
             </div>
-            <p className='section-lead'>
-              Você traz a história. A gente ajuda a encontrar a melhor forma de
-              contá-la.
-            </p>
+            <p className='section-lead'>{t.process.lead}</p>
           </div>
           <div className='steps-grid'>
-            {steps.map((step, index) => (
+            {t.process.steps.map((step, index) => (
               <article
                 className='step-card'
                 key={step.number}
@@ -736,7 +600,7 @@ export default function Home() {
                   />
                   <span>{step.number}</span>
                 </div>
-                {index < steps.length - 1 && (
+                {index < t.process.steps.length - 1 && (
                   <div
                     className='step-connector'
                     aria-hidden='true'
@@ -752,8 +616,8 @@ export default function Home() {
               name='book'
               size={17}
             />
-            <span>PDF, EPUB e TXT</span>
-            <i /> Seus arquivos permanecem seus.
+            <span>{t.process.formats}</span>
+            <i /> {t.process.privacyNote}
           </div>
         </div>
       </section>
@@ -762,67 +626,57 @@ export default function Home() {
         <div className='section-heading demo-heading'>
           <div>
             <div className='eyebrow'>
-              <span className='eyebrow-line' /> OUÇA A DIFERENÇA
+              <span className='eyebrow-line' /> {t.demo.eyebrow}
             </div>
             <h2>
-              Uma história.
-              <br />
-              <em>Diferentes vozes.</em>
+              {t.demo.title} {t.demo.titleEmphasis}
             </h2>
           </div>
-          <p className='section-lead'>
-            Uma prévia fictícia para mostrar como cada personagem pode ganhar
-            uma presença própria.
-          </p>
+          <p className='section-lead'>{t.demo.lead}</p>
         </div>
         <div className='demo-card'>
           <div className='demo-story'>
             <div className='demo-story-meta'>
-              <span>PRÉVIA DEMONSTRATIVA</span>
+              <span>{t.demo.preview}</span>
               <span>00:18</span>
             </div>
             <div className='demo-chapter'>
-              O JARDIM DEPOIS DA CHUVA <span>— TRECHO FICTÍCIO</span>
+              {t.demo.chapter} <span>{t.demo.fictionLabel}</span>
             </div>
             <div className='dialogue dialogue-narrator'>
               <span className='speaker'>
-                NARRADOR <i />
+                {t.demo.narrator} <i />
               </span>
-              <p>
-                A chuva havia parado, mas as folhas ainda guardavam pequenos
-                mundos de água.
-              </p>
+              <p>{t.demo.narratorLine}</p>
             </div>
             <div className='dialogue dialogue-lena'>
               <span className='speaker'>
-                LENA <i />
+                {t.demo.lena} <i />
               </span>
-              <p>
-                “Você ouviu isso?”, perguntou, sem tirar os olhos do jardim.
-              </p>
+              <p>{t.demo.lenaLine}</p>
             </div>
             <div className='dialogue dialogue-marcos'>
               <span className='speaker'>
-                MARCOS <i />
+                {t.demo.marcos} <i />
               </span>
-              <p>“Só o silêncio”, ele disse. “Às vezes, ele conta mais.”</p>
+              <p>{t.demo.marcosLine}</p>
             </div>
           </div>
           <div className='demo-player'>
             <div className='player-person'>
               <span className='person-initial'>N</span>
               <span>
-                <small>AGORA NARRA</small>
+                <small>{t.demo.nowNarrating}</small>
                 <strong>
                   {isPlaying
-                    ? 'Narrador · trecho em reprodução'
-                    : 'Narrador · voz neutra e envolvente'}
+                    ? t.demo.playing
+                    : t.demo.narratorVoice}
                 </strong>
               </span>
             </div>
             <div
               className={`waveform${isPlaying ? ' waveform-playing' : ''}`}
-              aria-label='Visualização de onda sonora demonstrativa'
+              aria-label={t.demo.waveformLabel}
             >
               {Array.from({ length: 48 }, (_, index) => (
                 <i
@@ -841,9 +695,7 @@ export default function Home() {
                 type='button'
                 className='play-button'
                 aria-label={
-                  isPlaying
-                    ? 'Pausar prévia demonstrativa'
-                    : 'Reproduzir prévia demonstrativa'
+                  isPlaying ? t.demo.pause : t.demo.play
                 }
                 onClick={() => setIsPlaying(!isPlaying)}
               >
@@ -861,8 +713,7 @@ export default function Home() {
           </div>
         </div>
         <p className='demo-disclaimer'>
-          <span /> Esta é uma demonstração visual. Nenhum áudio real está sendo
-          reproduzido.
+          <span /> {t.demo.disclaimer}
         </p>
       </section>
 
@@ -872,37 +723,22 @@ export default function Home() {
       >
         <div className='section-shell section-block'>
           <div className='section-heading'>
-            <div>
-              <div className='eyebrow'>
-                <span className='eyebrow-line' /> MODALIDADES
-              </div>
-              <h2>
-                Escolha como sua história
-                <br />
-                <em>será contada.</em>
-              </h2>
-            </div>
-            <p className='section-lead'>
-              Cada livro é único. Seu orçamento também — sem preços fixos ou
-              surpresas.
-            </p>
+            <h2>
+              {t.plans.title} {t.plans.titleEmphasis}
+            </h2>
+            <p className='section-lead'>{t.plans.lead}</p>
           </div>
           <div className='plans-grid'>
-            {plans.map((plan) => (
+            {t.plans.items.map((plan) => (
               <article
-                className={`plan-card${plan.featured ? ' plan-featured' : ''}`}
+                className='plan-card'
                 key={plan.name}
               >
-                <div className='plan-top'>
-                  <span>MODALIDADE {plan.index}</span>
-                  {plan.featured && (
-                    <span className='plan-badge'>MAIS ESCOLHIDO</span>
-                  )}
-                </div>
                 <h3>{plan.name}</h3>
                 <p className='plan-description'>{plan.description}</p>
                 <div className='plan-price'>
-                  Sob medida<span> orçamento personalizado</span>
+                  {t.plans.price}
+                  <span> {t.plans.priceNote}</span>
                 </div>
                 <div className='plan-divider' />
                 <ul>
@@ -917,10 +753,10 @@ export default function Home() {
                   ))}
                 </ul>
                 <a
-                  className={`button ${plan.featured ? 'button-primary' : 'button-outline'}`}
+                  className='button button-outline'
                   href='#orcamento'
                 >
-                  Explorar {plan.name}{' '}
+                  {t.plans.choose} {plan.name}{' '}
                   <Icon
                     name='arrow'
                     size={16}
@@ -930,13 +766,8 @@ export default function Home() {
             ))}
           </div>
           <div className='plan-footnote'>
-            <Icon
-              name='circle'
-              size={17}
-            />
             <span>
-              O valor é calculado conforme tamanho do documento, qualidade,
-              quantidade de vozes e complexidade da interpretação.
+              {t.plans.priceDisclaimer}
             </span>
           </div>
         </div>
@@ -950,138 +781,92 @@ export default function Home() {
           <div className='soundscape-heading'>
             <div>
               <div className='eyebrow'>
-                <span className='eyebrow-line' /> UMA NOVIDADE PLANEJADA PARA O
-                PREMIUM
+                <span className='eyebrow-line' /> {t.soundscape.eyebrow}
               </div>
               <h2 id='soundscape-title'>
-                <em>Entre</em>{' '}
-                na sua história.
+                {t.soundscape.title}
+                <br />
+                <em>{t.soundscape.titleEmphasis}</em>
               </h2>
             </div>
-            <p className='section-lead'>
-              Com o Taler Premium, cada história poderá ganhar uma atmosfera
-              própria. Nossa tecnologia de IA foi pensada para criar trilhas e
-              efeitos que acompanhem o ritmo, o contexto e as emoções da
-              narrativa.
-            </p>
+            <p className='section-lead'>{t.soundscape.lead}</p>
           </div>
 
-          <div className='soundscape-feature-grid'>
-            <article className='soundscape-feature'>
-              <span className='soundscape-feature-index'>01 / MÚSICA</span>
-              <h3>Trilhas sonoras contextuais</h3>
-              <p>
-                Música gerada por IA de acordo com o gênero, o contexto e o
-                clima de cada cena, com transições que acompanham a história —
-                da aventura à melancolia.
-              </p>
-            </article>
-            <article className='soundscape-feature'>
-              <span className='soundscape-feature-index'>02 / AMBIENTE</span>
-              <h3>Efeitos sonoros imersivos</h3>
-              <p>
-                Chuva, passos, portas, vento ou multidões, inseridos conforme os
-                acontecimentos. Escolha música, efeitos ou a combinação dos
-                dois.
-              </p>
-            </article>
-            <article className='soundscape-feature'>
-              <span className='soundscape-feature-index'>03 / CONTROLE</span>
-              <h3>Uma experiência sob seu controle</h3>
-              <p>
-                Ajuste narração, música e efeitos separadamente. Prefira uma
-                ambientação discreta, cinematográfica ou imersiva — ou
-                desligue-a.
-              </p>
-            </article>
-          </div>
-
-          <div
-            className='soundscape-console'
-            role='img'
-            aria-label='Interface conceitual de áudio planejada: cena de suspense, narração, trilha sonora e efeitos com níveis de volume independentes.'
-          >
-            <div className='soundscape-console-top'>
-              <span className='console-label'>
-                <i /> ESTUDO DE ATMOSFERA
-              </span>
-              <span className='console-planned'>
-                CONCEITO · FUNCIONALIDADE PLANEJADA
-              </span>
+          <div className='soundscape-layout'>
+            <div className='soundscape-feature-list'>
+              {t.soundscape.features.map((feature) => (
+                <article
+                  className='soundscape-feature'
+                  key={feature.title}
+                >
+                  <h3>{feature.title}</h3>
+                  <p>{feature.text}</p>
+                </article>
+              ))}
             </div>
-            <div className='soundscape-console-main'>
-              <div className='soundscape-scene'>
-                <span className='scene-overline'>
-                  O JARDIM DEPOIS DA CHUVA <i /> CAPÍTULO 04
+
+            <div
+              className='soundscape-console'
+              role='img'
+              aria-label={t.soundscape.visualLabel}
+            >
+              <div className='soundscape-console-main'>
+                <div className='soundscape-scene'>
+                  <span className='scene-overline'>
+                    {t.soundscape.scene} <i /> {t.soundscape.chapter}
+                  </span>
+                  <h3>
+                    {t.soundscape.sceneTitle}
+                    <br />
+                    <em>{t.soundscape.sceneTitleEmphasis}</em>
+                  </h3>
+                </div>
+                <div className='soundscape-mix'>
+                  <div
+                    className='soundscape-wave'
+                    aria-hidden='true'
+                  >
+                    {Array.from({ length: 40 }, (_, index) => (
+                      <i
+                        key={index}
+                        style={
+                          {
+                            '--wave-height': `${8 + ((index * 23 + 13) % 40)}px`,
+                          } as CSSProperties
+                        }
+                      />
+                    ))}
+                  </div>
+                  <div
+                    className='mix-tracks'
+                    aria-hidden='true'
+                  >
+                    {t.soundscape.tracks.map(([label, detail, trackClass]) => (
+                      <div
+                        className='mix-track'
+                        key={label}
+                      >
+                        <span className={`mix-track-icon ${trackClass}`} />
+                        <span className='mix-track-info'>
+                          <strong>{label}</strong>
+                          <small>{detail}</small>
+                        </span>
+                        <span className='mix-track-level'>
+                          <i />
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className='soundscape-console-foot'>
+                <span>
+                  <i /> {t.soundscape.plannedForPremium}
                 </span>
-                <h3>
-                  Quando a noite
-                  <br />
-                  <em>começa a escutar.</em>
-                </h3>
-                <div
-                  className='mood-tags'
-                  aria-hidden='true'
-                >
-                  <span>Suspense</span>
-                  <span>Tensão crescente</span>
-                  <span>Tranquilidade</span>
-                </div>
+                <span>{t.soundscape.illustrativeControls}</span>
               </div>
-              <div className='soundscape-mix'>
-                <div
-                  className='soundscape-wave'
-                  aria-hidden='true'
-                >
-                  {Array.from({ length: 64 }, (_, index) => (
-                    <i
-                      key={index}
-                      style={
-                        {
-                          '--wave-height': `${8 + ((index * 23 + 13) % 40)}px`,
-                        } as CSSProperties
-                      }
-                    />
-                  ))}
-                </div>
-                <div
-                  className='mix-tracks'
-                  aria-hidden='true'
-                >
-                  {[
-                    ['Narração', 'VOZ · LENA', 'mix-track-voice'],
-                    ['Trilha sonora', 'SUSPENSE · CORDAS', 'mix-track-music'],
-                    ['Efeitos', 'CHUVA · PASSOS', 'mix-track-effects'],
-                  ].map(([label, detail, trackClass]) => (
-                    <div
-                      className='mix-track'
-                      key={label}
-                    >
-                      <span className={`mix-track-icon ${trackClass}`} />
-                      <span className='mix-track-info'>
-                        <strong>{label}</strong>
-                        <small>{detail}</small>
-                      </span>
-                      <span className='mix-track-level'>
-                        <i />
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className='soundscape-console-foot'>
-              <span>
-                <i /> PLANEJADA PARA O PREMIUM
-              </span>
-              <span>CONTROLES ILUSTRATIVOS · NÃO FUNCIONAIS</span>
             </div>
           </div>
-          <p className='soundscape-disclaimer'>
-            A geração de música e efeitos sonoros é uma funcionalidade planejada
-            para o Taler Premium. Esta interface é apenas conceitual; os
-            controles não são funcionais.
-          </p>
         </div>
       </section>
 
@@ -1091,23 +876,17 @@ export default function Home() {
       >
         <div className='pricing-copy'>
           <div className='eyebrow'>
-            <span className='eyebrow-line' /> PREÇO JUSTO, DO SEU JEITO
+            <span className='eyebrow-line' /> {t.pricing.eyebrow}
           </div>
           <h2>
-            Você paga pelo que
-            <br />
-            <em>realmente produz.</em>
+            {t.pricing.title} {t.pricing.titleEmphasis}
           </h2>
-          <p>
-            Cada livro tem seu próprio ritmo. Analisamos seu documento para
-            montar um orçamento que leva em conta o que a sua história precisa —
-            nem mais, nem menos.
-          </p>
+          <p>{t.pricing.description}</p>
           <a
             className='button button-primary'
             href='#'
           >
-            Calcular o valor do meu audiolivro{' '}
+            {t.pricing.calculate}{' '}
             <Icon
               name='arrow'
               size={17}
@@ -1118,23 +897,14 @@ export default function Home() {
               name='check'
               size={16}
             />{' '}
-            Você revisa tudo antes de começar.
+            {t.pricing.reassurance}
           </div>
         </div>
         <div
           className='quote-flow'
-          aria-label='Etapas do orçamento personalizado'
+          aria-label={t.pricing.flowLabel}
         >
-          {[
-            ['1', 'Upload do livro', 'Seu arquivo, sua história'],
-            ['2', 'Análise automática', 'Estrutura e personagens'],
-            ['3', 'Configuração', 'Vozes e interpretação'],
-            [
-              '04',
-              'Orçamento personalizado',
-              'Tudo transparente, antes de gerar',
-            ],
-          ].map(([number, title, caption], index) => (
+          {t.pricing.steps.map(([number, title, caption], index) => (
             <div
               className='quote-step'
               key={number}
@@ -1144,7 +914,7 @@ export default function Home() {
                 <strong>{title}</strong>
                 <span>{caption}</span>
               </div>
-              {index < 3 && (
+              {index < t.pricing.steps.length - 1 && (
                 <div
                   className='quote-line'
                   aria-hidden='true'
@@ -1153,18 +923,9 @@ export default function Home() {
             </div>
           ))}
           <div className='quote-review'>
-            <span className='review-check'>
-              <Icon
-                name='check'
-                size={17}
-              />
-            </span>
             <span>
-              <strong>Você decide quando está pronto.</strong>
-              <small>
-                Revise a distribuição de vozes e as configurações antes de
-                iniciar a geração.
-              </small>
+              <strong>{t.pricing.reviewTitle}</strong>
+              <small>{t.pricing.reviewText}</small>
             </span>
           </div>
         </div>
@@ -1173,21 +934,14 @@ export default function Home() {
       <section className='faq-section'>
         <div className='section-shell section-block faq-layout'>
           <div className='faq-intro'>
-            <div className='eyebrow'>
-              <span className='eyebrow-line' /> PERGUNTAS FREQUENTES
-            </div>
             <h2>
-              Boas histórias
-              <br />
-              começam com
-              <br />
-              <em>boas perguntas.</em>
+              {t.faq.title} {t.faq.titleLine2} {t.faq.titleEmphasis}
             </h2>
             <a
               className='text-link'
               href='#'
             >
-              Ainda tem dúvidas? Fale com a gente{' '}
+              {t.faq.contact}{' '}
               <Icon
                 name='arrow'
                 size={15}
@@ -1195,7 +949,7 @@ export default function Home() {
             </a>
           </div>
           <div className='faq-list'>
-            {faqs.map((faq) => (
+            {t.faq.items.map((faq) => (
               <details
                 className='faq-item'
                 key={faq.question}
@@ -1215,62 +969,58 @@ export default function Home() {
       </section>
 
       <section className='closing-cta'>
-        <div
-          className='closing-orb'
-          aria-hidden='true'
-        />
         <div className='section-shell closing-inner'>
-          <div className='eyebrow'>
-            <span className='eyebrow-line' /> A SUA HISTÓRIA, EM OUTRA DIMENSÃO
-          </div>
           <h2>
-            Sua próxima história
-            <br />
-            merece ser <em>ouvida.</em>
+            {t.closing.title} {t.closing.titleEmphasis}
           </h2>
-          <p>
-            Envie seu livro e descubra como ele pode ganhar uma nova dimensão.
-          </p>
+          <p>{t.closing.description}</p>
           <a
             className='button button-light'
             href='#orcamento'
           >
-            Começar agora{' '}
+            {t.closing.cta}{' '}
             <Icon
               name='arrow'
               size={17}
             />
           </a>
-          <span className='closing-note'>Stories, tailored to you.</span>
+          <span className='closing-note'>{t.closing.tagline}</span>
         </div>
       </section>
 
       <footer className='site-footer'>
         <div className='section-shell footer-inner'>
-          <Brand footer />
+          <Brand
+            footer
+            t={t}
+          />
           <nav
             className='footer-links'
-            aria-label='Links institucionais'
+            aria-label={t.footer.linksLabel}
           >
-            <a href='#como-funciona'>Como funciona</a>
-            <a href='#recursos'>Recursos</a>
-            <a href='#planos'>Planos</a>
-            <a href='mailto:oi@taler.audio'>Contato</a>
+            <a href='#como-funciona'>{t.footer.howItWorks}</a>
+            <a href='#recursos'>{t.footer.features}</a>
+            <a href='#planos'>{t.footer.plans}</a>
+            <a href='mailto:oi@taler.audio'>{t.footer.contact}</a>
           </nav>
           <nav
             className='footer-legal'
-            aria-label='Links legais'
+            aria-label={t.footer.legalLabel}
           >
-            <a href='mailto:oi@taler.audio?subject=Termos%20de%20uso'>
-              Termos de uso
+            <a
+              href={`mailto:oi@taler.audio?subject=${encodeURIComponent(t.footer.termsSubject)}`}
+            >
+              {t.footer.terms}
             </a>
-            <a href='mailto:oi@taler.audio?subject=Pol%C3%ADtica%20de%20privacidade'>
-              Privacidade
+            <a
+              href={`mailto:oi@taler.audio?subject=${encodeURIComponent(t.footer.privacySubject)}`}
+            >
+              {t.footer.privacy}
             </a>
           </nav>
           <div className='footer-bottom'>
-            <span>© 2026 Taler. Todos os direitos reservados.</span>
-            <span>Feito para histórias que merecem ser ouvidas.</span>
+            <span>{t.footer.copyright}</span>
+            <span>{t.footer.signoff}</span>
           </div>
         </div>
       </footer>
